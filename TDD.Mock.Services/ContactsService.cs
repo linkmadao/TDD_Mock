@@ -28,6 +28,8 @@ namespace TDD.Mock.Services
 
         public Contact Get(Guid id) 
         { 
+            var result = _contactRepository.Get(id);
+
             _contacts = new List<Contact>()
             {
                 new Contact()
@@ -60,6 +62,8 @@ namespace TDD.Mock.Services
             };
 
             Contact contact = _contacts.FirstOrDefault(t => t.Id == id);
+            
+            _contactRepository.Update(id, name);
             return contact != null;
         }
 

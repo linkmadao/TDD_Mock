@@ -95,18 +95,26 @@ namespace TDD.Mock.Tests
             Assert.NotEqual(expectedResult, result);
         }
 
-        [Theory(DisplayName = "Test Update Contact NotExecuted")]
-        [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A", "Abreu", true)]
-        public void TestUpdateFail(string id, string name, bool expectedResult)
+        [Theory(DisplayName = "Test Update Contact Fail")]
+        [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A", "Abreu")]
+        public void TestUpdateFail(string id, string name)
         {
-            // Arrange
-            Guid newId = Guid.Parse(id);
+            try
+            {
+                // Arrange
+                _contactRepository.Setup(t => t.Update(It.IsAny<Guid>(), It.IsAny<string>())).Throws(new IOException());
+                Guid newId = Guid.Parse(id);
 
-            // Act
-            bool result = _contactsService.Update(newId, name);
+                // Act
+                _contactsService.Update(newId, name);
 
-            // Assert
-            Assert.NotEqual(expectedResult, result);
+                // Assert
+                Assert.Fail("Falha ao cair no exception.");
+            }
+            catch (Exception ex)
+            {
+                Assert.Equal("I/O error occurred.", ex.Message);
+            }
         }
 
         [Theory(DisplayName = "Test Get Contact Ok")]
@@ -132,5 +140,49 @@ namespace TDD.Mock.Tests
             result.Should().BeEquivalentTo(match);
         }
 
+        [Theory(DisplayName = "Test Get Contact NotEqual")]
+        [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
+        public void TestGetNotEqual(string id)
+        {
+            // Arrange
+            Guid newId = Guid.Parse(id);
+            Contact match = new()
+            {
+                Id = newId,
+                Name = "Maria",
+                Telephone = new List<string>()
+                {
+                    "012345678901"
+                }
+            };
+
+            // Act
+            var result = _contactsService.Get(newId);
+
+            // Assert
+            result.Should().NotBeEquivalentTo(match);
+        }
+
+        [Theory(DisplayName = "Test Get Contact Fail")]
+        [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
+        public void TestGetFail(string id)
+        {
+            try
+            {
+                // Arrange
+                _contactRepository.Setup(t => t.Get(It.IsAny<Guid>())).Throws(new IOException());
+                Guid newId = Guid.Parse(id);
+
+                // Act
+                _contactsService.Get(newId);
+
+                // Assert
+                Assert.Fail("Falha ao cair no exception.");
+            }
+            catch (Exception ex)
+            {
+                Assert.Equal("I/O error occurred.", ex.Message);
+            }
+        }
     }
 }
