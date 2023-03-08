@@ -26,8 +26,8 @@ namespace TDD.Mock.Services
             return contact.Id;
         }
 
-        public Contact Get(Guid id) 
-        { 
+        public Contact Get(Guid id)
+        {
             var result = _contactRepository.Get(id);
 
             _contacts = new List<Contact>()
@@ -62,34 +62,14 @@ namespace TDD.Mock.Services
             };
 
             Contact contact = _contacts.FirstOrDefault(t => t.Id == id);
-            
+
             _contactRepository.Update(id, name);
             return contact != null;
         }
 
         public bool Remove(Guid id)
         {
-             _contacts = new List<Contact>()
-            {
-                new Contact()
-                {
-                    Id = id,
-                    Name = "Jose",
-                    Telephone = new List<string>()
-                    {
-                        "012345678901"
-                    }
-                }
-            };
-
-            Contact contact = _contacts.FirstOrDefault(t => t.Id == id);
-            if (contact != null)
-            {
-                _contacts.Remove(contact);
-                return true;    
-            }
-
-            return false;
+            return _contactRepository.Remove(id);        
         }
     }
 }

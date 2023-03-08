@@ -117,9 +117,9 @@ namespace TDD.Mock.Tests
             }
         }
 
-        [Theory(DisplayName = "Test Get Contact Ok")]
+        [Theory(DisplayName = "Test Get Contact Equal")]
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
-        public void TestGetOk(string id)
+        public void TestGetEqual(string id)
         {
             // Arrange
             Guid newId = Guid.Parse(id);
@@ -175,6 +175,58 @@ namespace TDD.Mock.Tests
 
                 // Act
                 _contactsService.Get(newId);
+
+                // Assert
+                Assert.Fail("Falha ao cair no exception.");
+            }
+            catch (Exception ex)
+            {
+                Assert.Equal("I/O error occurred.", ex.Message);
+            }
+        }
+
+        [Theory(DisplayName = "Test Remove Contact Equal")]
+        [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
+        public void TestRemoveEqual(string id)
+        {
+            // Arrange
+            _contactRepository.Setup(t => t.Remove(It.IsAny<Guid>())).Returns(true);
+            Guid newId = Guid.Parse(id);
+
+            // Act
+            var result = _contactsService.Remove(newId);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Theory(DisplayName = "Test Remove Contact Equal")]
+        [InlineData("88C3E7C6-B768-4B74-AFFD-4800E9FBD581")]
+        public void TestRemoveNotEqual(string id)
+        {
+            // Arrange
+            _contactRepository.Setup(t => t.Remove(It.IsAny<Guid>())).Returns(false);
+            Guid newId = Guid.Parse(id);
+
+            // Act
+            var result = _contactsService.Remove(newId);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Theory(DisplayName = "Test Remove Contact Fail")]
+        [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
+        public void TestRemoveFail(string id)
+        {
+            try
+            {
+                // Arrange
+                _contactRepository.Setup(t => t.Remove(It.IsAny<Guid>())).Throws(new IOException());
+                Guid newId = Guid.Parse(id);
+
+                // Act
+                _contactsService.Remove(newId);
 
                 // Assert
                 Assert.Fail("Falha ao cair no exception.");
