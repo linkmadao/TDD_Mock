@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Moq;
+using System.Xml.Linq;
 using TDD.Mock.DAL;
 using TDD.Mock.Domain;
 using TDD.Mock.Services;
@@ -107,5 +108,29 @@ namespace TDD.Mock.Tests
             // Assert
             Assert.NotEqual(expectedResult, result);
         }
+
+        [Theory(DisplayName = "Test Get Contact Ok")]
+        [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
+        public void TestGetOk(string id)
+        {
+            // Arrange
+            Guid newId = Guid.Parse(id);
+            var match = new Contact()
+            {
+                Id = newId,
+                Name = "Jose",
+                Telephone = new List<string>()
+                    {
+                        "012345678901"
+                    }
+            };
+
+            // Act
+            var result = _contactsService.Get(newId);
+
+            // Assert
+            result.Should().BeEquivalentTo(match);
+        }
+
     }
 }
