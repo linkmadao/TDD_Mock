@@ -32,7 +32,7 @@ namespace TDD.Mock.Services
             {
                 new Contact()
                 {
-                    Id = new Guid("88C3E7C6-B768-4B74-AFFD-4800E9FBD581"),
+                    Id = id,
                     Name = "Jose",
                     Telephone = new List<string>()
                     {
@@ -50,7 +50,7 @@ namespace TDD.Mock.Services
             {
                 new Contact()
                 {
-                    Id = new Guid("88C3E7C6-B768-4B74-AFFD-4800E9FBD581"),
+                    Id = id,
                     Name = "Jose",
                     Telephone = new List<string>()
                     {
@@ -69,7 +69,7 @@ namespace TDD.Mock.Services
             {
                 new Contact()
                 {
-                    Id = new Guid("88C3E7C6-B768-4B74-AFFD-4800E9FBD581"),
+                    Id = id,
                     Name = "Jose",
                     Telephone = new List<string>()
                     {

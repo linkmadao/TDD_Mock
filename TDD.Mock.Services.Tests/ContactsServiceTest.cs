@@ -64,19 +64,34 @@ namespace TDD.Mock.Tests
         }
 
 
-        [Theory(DisplayName = "Test Update Contact")]
+        [Theory(DisplayName = "Test Update Contact Equal")]
         [InlineData("88C3E7C6-B768-4B74-AFFD-4800E9FBD581", "Maria", true)]
-        [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A", "Abreu", false)]
-        public void TestUpdate(string id, string name, bool expectedResult)
+        [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A", "Abreu", true)]
+        public void TestUpdateEqual(string id, string name, bool expectedResult)
         {
             // Arrange
-            Guid newId = Guid.Parse(id);
+            _contactRepository.Setup(t => t.Update(It.IsAny<Guid>(), It.IsAny<string>())).Returns(true);
 
             // Act
-            bool result = _contactsService.Update(newId, name);
+            bool result = _contactsService.Update(Guid.Parse(id), name);
 
             // Assert
             Assert.Equal(expectedResult, result);
+        }
+
+        [Theory(DisplayName = "Test Update Contact NotEqual")]
+        [InlineData("88C3E7C6-B768-4B74-AFFD-4800E9FBD581", "Maria", false)]
+        [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A", "Abreu", false)]
+        public void TestUpdateNotEqual(string id, string name, bool expectedResult)
+        {
+            // Arrange
+            _contactRepository.Setup(t => t.Update(It.IsAny<Guid>(), It.IsAny<string>())).Returns(false);
+
+            // Act
+            bool result = _contactsService.Update(Guid.Parse(id), name);
+
+            // Assert
+            Assert.NotEqual(expectedResult, result);
         }
 
         [Theory(DisplayName = "Test Update Contact NotExecuted")]
