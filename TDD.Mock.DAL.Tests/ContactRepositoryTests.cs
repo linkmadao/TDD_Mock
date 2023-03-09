@@ -2,11 +2,11 @@
 
 namespace TDD.Mock.DAL.Tests
 {
-    public class ContactRepositoryTest
+    public class ContactRepositoryTests
     {
         public IContactRepository _contactRepository;
 
-        public ContactRepositoryTest()
+        public ContactRepositoryTests()
         {
             _contactRepository = new ContactRepository();
         }
