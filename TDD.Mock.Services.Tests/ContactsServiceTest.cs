@@ -26,7 +26,7 @@ namespace TDD.Mock.Tests
 
             // Act
             Guid result = _contactsService.Add("Jose", "01123456789");
-            
+
             // Assert
             result.Should().Be(Guid.Parse("88C3E7C6-B768-4B74-AFFD-4800E9FBD581"));
         }
@@ -47,21 +47,12 @@ namespace TDD.Mock.Tests
         [Fact(DisplayName = "Test Add Mock Fail")]
         public void TestAddFail()
         {
-            try
-            {
-                // Arrange
-                _contactRepository.Setup(t => t.Add(It.IsAny<Contact>())).Throws(new IOException());
+            // Arrange
+            _contactRepository.Setup(t => t.Add(It.IsAny<Contact>())).Throws(new IOException());
 
-                // Act
-                Guid result = _contactsService.Add("Jose", "01123456789");
-
-                // Assert
-                Assert.Fail("Falha ao cair no exception.");
-            }
-            catch (Exception ex)
-            {
-                Assert.Equal("I/O error occurred.", ex.Message);
-            }
+            // Act & Assert
+            var ex = Assert.Throws<IOException>(() => _contactsService.Add("Jose", "01123456789"));
+            Assert.Equal("I/O error occurred.", ex.Message);
         }
 
 
@@ -99,22 +90,13 @@ namespace TDD.Mock.Tests
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A", "Abreu")]
         public void TestUpdateFail(string id, string name)
         {
-            try
-            {
-                // Arrange
-                _contactRepository.Setup(t => t.Update(It.IsAny<Guid>(), It.IsAny<string>())).Throws(new IOException());
-                Guid newId = Guid.Parse(id);
+            // Arrange
+            _contactRepository.Setup(t => t.Update(It.IsAny<Guid>(), It.IsAny<string>())).Throws(new IOException());
+            Guid newId = Guid.Parse(id);
 
-                // Act
-                _contactsService.Update(newId, name);
-
-                // Assert
-                Assert.Fail("Falha ao cair no exception.");
-            }
-            catch (Exception ex)
-            {
-                Assert.Equal("I/O error occurred.", ex.Message);
-            }
+            // Act & Assert
+            var ex = Assert.Throws<IOException>(() => _contactsService.Update(newId, name));
+            Assert.Equal("I/O error occurred.", ex.Message);
         }
 
         [Theory(DisplayName = "Test Get Contact Equal")]
@@ -167,22 +149,13 @@ namespace TDD.Mock.Tests
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
         public void TestGetFail(string id)
         {
-            try
-            {
-                // Arrange
-                _contactRepository.Setup(t => t.Get(It.IsAny<Guid>())).Throws(new IOException());
-                Guid newId = Guid.Parse(id);
+            // Arrange
+            _contactRepository.Setup(t => t.Get(It.IsAny<Guid>())).Throws(new IOException());
+            Guid newId = Guid.Parse(id);
 
-                // Act
-                _contactsService.Get(newId);
-
-                // Assert
-                Assert.Fail("Falha ao cair no exception.");
-            }
-            catch (Exception ex)
-            {
-                Assert.Equal("I/O error occurred.", ex.Message);
-            }
+            // Act && Assert
+            var ex = Assert.Throws<IOException>(() => _contactsService.Get(newId));
+            Assert.Equal("I/O error occurred.", ex.Message);
         }
 
         [Theory(DisplayName = "Test Remove Contact Equal")]
@@ -219,22 +192,13 @@ namespace TDD.Mock.Tests
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
         public void TestRemoveFail(string id)
         {
-            try
-            {
-                // Arrange
-                _contactRepository.Setup(t => t.Remove(It.IsAny<Guid>())).Throws(new IOException());
-                Guid newId = Guid.Parse(id);
+            // Arrange
+            _contactRepository.Setup(t => t.Remove(It.IsAny<Guid>())).Throws(new IOException());
+            Guid newId = Guid.Parse(id);
 
-                // Act
-                _contactsService.Remove(newId);
-
-                // Assert
-                Assert.Fail("Falha ao cair no exception.");
-            }
-            catch (Exception ex)
-            {
-                Assert.Equal("I/O error occurred.", ex.Message);
-            }
+            // Act
+            var ex = Assert.Throws<IOException>(() => _contactsService.Remove(newId));
+            Assert.Equal("I/O error occurred.", ex.Message);
         }
     }
 }
