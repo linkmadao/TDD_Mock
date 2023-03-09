@@ -7,19 +7,20 @@ using TDD.Mock.Services;
 
 namespace TDD.Mock.Tests
 {
-    public class ContactsServiceTest
+    public class ContactServiceTests
     {
         private readonly Mock<IContactRepository> _contactRepository;
         private readonly IContactsService _contactsService;
 
-        public ContactsServiceTest()
+        public ContactServiceTests()
         {
             _contactRepository = new Mock<IContactRepository>();
             _contactsService = new ContactsService(_contactRepository.Object);
         }
 
-        [Fact(DisplayName = "Test Add Mock Equal")]
-        public void TestAddEqual()
+        [Fact(DisplayName = "Add Mock Equal")]
+        [Trait("Category", "Contact Service Tests")]
+        public void ContactService_Add_Equal()
         {
             // Arrange
             _contactRepository.Setup(t => t.Add(It.IsAny<Contact>())).Returns(new Guid("88C3E7C6-B768-4B74-AFFD-4800E9FBD581"));
@@ -31,8 +32,9 @@ namespace TDD.Mock.Tests
             result.Should().Be(Guid.Parse("88C3E7C6-B768-4B74-AFFD-4800E9FBD581"));
         }
 
-        [Fact(DisplayName = "Test Add Mock NotEqual")]
-        public void TestAddNotEqual()
+        [Fact(DisplayName = "Add Mock NotEqual")]
+        [Trait("Category", "Contact Service Tests")]
+        public void ContactService_Add_NotEqual()
         {
             // Arrange
             _contactRepository.Setup(t => t.Add(It.IsAny<Contact>())).Returns(new Guid("88C3E7C6-B768-4B74-AFFD-4800E9FBD582"));
@@ -44,8 +46,9 @@ namespace TDD.Mock.Tests
         }
 
 
-        [Fact(DisplayName = "Test Add Mock Fail")]
-        public void TestAddFail()
+        [Fact(DisplayName = "Add Mock Fail")]
+        [Trait("Category", "Contact Service Tests")]
+        public void ContactService_Add_Fail()
         {
             // Arrange
             _contactRepository.Setup(t => t.Add(It.IsAny<Contact>())).Throws(new IOException());
@@ -56,10 +59,11 @@ namespace TDD.Mock.Tests
         }
 
 
-        [Theory(DisplayName = "Test Update Contact Equal")]
+        [Theory(DisplayName = "Update Contact Equal")]
+        [Trait("Category", "Contact Service Tests")]
         [InlineData("88C3E7C6-B768-4B74-AFFD-4800E9FBD581", "Maria", true)]
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A", "Abreu", true)]
-        public void TestUpdateEqual(string id, string name, bool expectedResult)
+        public void ContactService_Update_Equal(string id, string name, bool expectedResult)
         {
             // Arrange
             _contactRepository.Setup(t => t.Update(It.IsAny<Guid>(), It.IsAny<string>())).Returns(true);
@@ -71,10 +75,11 @@ namespace TDD.Mock.Tests
             Assert.Equal(expectedResult, result);
         }
 
-        [Theory(DisplayName = "Test Update Contact NotEqual")]
+        [Theory(DisplayName = "Update Contact NotEqual")]
+        [Trait("Category", "Contact Service Tests")]
         [InlineData("88C3E7C6-B768-4B74-AFFD-4800E9FBD581", "Maria", false)]
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A", "Abreu", false)]
-        public void TestUpdateNotEqual(string id, string name, bool expectedResult)
+        public void ContactService_Update_NotEqual(string id, string name, bool expectedResult)
         {
             // Arrange
             _contactRepository.Setup(t => t.Update(It.IsAny<Guid>(), It.IsAny<string>())).Returns(false);
@@ -86,9 +91,10 @@ namespace TDD.Mock.Tests
             Assert.NotEqual(expectedResult, result);
         }
 
-        [Theory(DisplayName = "Test Update Contact Fail")]
+        [Theory(DisplayName = "Update Contact Fail")]
+        [Trait("Category", "Contact Service Tests")]
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A", "Abreu")]
-        public void TestUpdateFail(string id, string name)
+        public void ContactService_Update_Fail(string id, string name)
         {
             // Arrange
             _contactRepository.Setup(t => t.Update(It.IsAny<Guid>(), It.IsAny<string>())).Throws(new IOException());
@@ -99,9 +105,10 @@ namespace TDD.Mock.Tests
             Assert.Equal("I/O error occurred.", ex.Message);
         }
 
-        [Theory(DisplayName = "Test Get Contact Equal")]
+        [Theory(DisplayName = "Get Contact Equal")]
+        [Trait("Category", "Contact Service Tests")]
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
-        public void TestGetEqual(string id)
+        public void ContactService_Get_Equal(string id)
         {
             // Arrange
             Guid newId = Guid.Parse(id);
@@ -122,9 +129,10 @@ namespace TDD.Mock.Tests
             result.Should().BeEquivalentTo(match);
         }
 
-        [Theory(DisplayName = "Test Get Contact NotEqual")]
+        [Theory(DisplayName = "Get Contact NotEqual")]
+        [Trait("Category", "Contact Service Tests")]
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
-        public void TestGetNotEqual(string id)
+        public void ContactService_Get_NotEqual(string id)
         {
             // Arrange
             Guid newId = Guid.Parse(id);
@@ -145,9 +153,10 @@ namespace TDD.Mock.Tests
             result.Should().NotBeEquivalentTo(match);
         }
 
-        [Theory(DisplayName = "Test Get Contact Fail")]
+        [Theory(DisplayName = "Get Contact Fail")]
+        [Trait("Category", "Contact Service Tests")]
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
-        public void TestGetFail(string id)
+        public void ContactService_Get_Fail(string id)
         {
             // Arrange
             _contactRepository.Setup(t => t.Get(It.IsAny<Guid>())).Throws(new IOException());
@@ -158,9 +167,10 @@ namespace TDD.Mock.Tests
             Assert.Equal("I/O error occurred.", ex.Message);
         }
 
-        [Theory(DisplayName = "Test Remove Contact Equal")]
+        [Theory(DisplayName = "Remove Contact Equal")]
+        [Trait("Category", "Contact Service Tests")]
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
-        public void TestRemoveEqual(string id)
+        public void ContactService_Remove_Equal(string id)
         {
             // Arrange
             _contactRepository.Setup(t => t.Remove(It.IsAny<Guid>())).Returns(true);
@@ -173,9 +183,10 @@ namespace TDD.Mock.Tests
             result.Should().BeTrue();
         }
 
-        [Theory(DisplayName = "Test Remove Contact Equal")]
+        [Theory(DisplayName = "Remove Contact Equal")]
+        [Trait("Category", "Contact Service Tests")]
         [InlineData("88C3E7C6-B768-4B74-AFFD-4800E9FBD581")]
-        public void TestRemoveNotEqual(string id)
+        public void ContactService_Remove_NotEqual(string id)
         {
             // Arrange
             _contactRepository.Setup(t => t.Remove(It.IsAny<Guid>())).Returns(false);
@@ -188,9 +199,10 @@ namespace TDD.Mock.Tests
             result.Should().BeFalse();
         }
 
-        [Theory(DisplayName = "Test Remove Contact Fail")]
+        [Theory(DisplayName = "Remove Contact Fail")]
+        [Trait("Category", "Contact Service Tests")]
         [InlineData("3096A1C8-5D17-4A06-909E-21B06F788D9A")]
-        public void TestRemoveFail(string id)
+        public void ContactService_Remove_Fail(string id)
         {
             // Arrange
             _contactRepository.Setup(t => t.Remove(It.IsAny<Guid>())).Throws(new IOException());
