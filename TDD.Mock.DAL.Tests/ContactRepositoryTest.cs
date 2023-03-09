@@ -12,7 +12,7 @@ namespace TDD.Mock.DAL.Tests
         }
 
         [Fact(DisplayName = "Test Add Mock Fail")]
-        public void TestAddFail()
+        public void ContactRepository_Add_ThrowsNotImplementedException()
         {
             // Arrange
             Contact contact = new();
@@ -23,7 +23,7 @@ namespace TDD.Mock.DAL.Tests
         }
 
         [Fact(DisplayName = "Test Get Mock Fail")]
-        public void TestGetFail()
+        public void ContactRepository_Get_ThrowsNotImplementedException()
         {
             // Arrange, Act & Assert
             var ex = Assert.Throws<NotImplementedException>(() => _contactRepository.Get(new Guid()));
@@ -31,7 +31,7 @@ namespace TDD.Mock.DAL.Tests
         }
 
         [Fact(DisplayName = "Test Update Mock Fail")]
-        public void TestUpdateFail()
+        public void ContactRepository_Update_ThrowsNotImplementedException()
         {
             // Arrange, Act & Assert
             var ex = Assert.Throws<NotImplementedException>(() => _contactRepository.Update(new Guid(), "Jose"));
@@ -39,7 +39,7 @@ namespace TDD.Mock.DAL.Tests
         }
 
         [Fact(DisplayName = "Test Delete Mock Fail")]
-        public void TestDeleteFail()
+        public void ContactRepository_Remove_ThrowsNotImplementedException()
         {
             var ex = Assert.Throws<NotImplementedException>(() => _contactRepository.Remove(new Guid()));
             Assert.Equal("The method or operation is not implemented.", ex.Message);
